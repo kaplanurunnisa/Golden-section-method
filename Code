@@ -1,0 +1,64 @@
+
+import math
+
+# adım-1 -- Durumların ve fonksiyonun belirlenmesi
+func = math.sin
+xL = 0.1
+xU = math.pi
+
+# adım-2 -- işlemin uç noktalarını tanımlayın
+fL = func(xL)
+fU = func(xU)
+
+# adım-3 -- ara noktaların hesaplanması
+R = 0.5 * (math.sqrt(5) - 1)
+d = R * (xU - xL)
+x1 = xU - d
+x2 = xL + d
+
+# adım-4 x1 ve x2 noktalarında işlemi yapmak
+f1 = func(x1)
+f2 = func(x2)
+
+# adım-5 main Loop
+tol = 1e-4
+err = float('inf')
+while err > tol:
+    # adım-5a aralığı güncelleme
+    if f1 > f2:
+        # üst limiti x2'ye eşitleme
+        xU = x2
+        fU = f2
+
+        # yeni x2
+        x2 = x1
+        f2 = f1
+        # yeni x1
+        d = R * (xU - xL)
+        x1 = xU - d
+        # f1 tanımla
+        f1 = func(x1)
+    elif f1 < f2:
+        # Alt limiti x1'e taşı
+        xL = x1
+        fL = f1
+        # Yeni x1
+        x1 = x2
+        f1 = f2
+        # yeni x2
+        d = R * (xU - xL)
+        x2 = xL + d
+        # x2 deki fonksiyonu tanımla
+        f2 = func(x2)
+    else:
+        xL = (x1 + x2) / 2
+        xU = xL
+
+    # adım-5b -- yakınsamayı belirle
+    err = 2 * abs(xU - xL) / (xU + xL)
+    err = abs(xU - xL)
+
+# adım-6 sonucu hesapla
+xe = (x1 + x2) / 2
+
+print(f"Sonuç: {xe} (Eğer işlem doğruysa, cevap {math.pi/2} olur!)")
